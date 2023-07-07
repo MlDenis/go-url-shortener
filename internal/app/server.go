@@ -2,10 +2,10 @@ package app
 
 import (
 	"github.com/MlDenis/go-url-shortener/internal/config"
+	"github.com/google/uuid"
 	"io"
 	"net/http"
 	"path"
-	"github.com/google/uuid"
 )
 
 func Run() error {
@@ -34,7 +34,7 @@ func ServeTheRequest(w http.ResponseWriter, r *http.Request) {
 func GetHandler(w http.ResponseWriter, r *http.Request) {
 	_, shortURL := path.Split(r.URL.Path)
 	URL, found := URLsArchive[shortURL]
-	if != found {
+	if !found {
 		BadRequestHandler(w, r)
 	}
 

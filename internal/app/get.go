@@ -1,28 +1,19 @@
-package httphandlers
+package app
 
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"path"
 )
 
-func (h* ) Get() echo.HandlerFunc  {
-	_, shortURL := path.Split(r.URL.Path)
+func (s *Server) Get() echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		URL, err := s.urlsArchive.Get(ctx.Param("id"))
+		if err != nil {
+			return ctx.String(http.StatusBadRequest, fmt.Errorf("get URL error: %s", err).Error())
+		}
 
-	if shortURL == "" {
-		BadRequestHandler(w, r)
-		return
+		ctx.Response().Header().Set("Location", URL)
+		return ctx.NoContent(http.StatusTemporaryRedirect)
 	}
-
-	URL, found := URLsArchive[shortURL]
-	if !found {
-		BadRequestHandler(w, r)
-	}
-
-	w.Header().Set("Location", URL)
-	fmt.Printf("%s", w)
-	//http.Redirect(w, r, URL, http.StatusTemporaryRedirect)
-	w.WriteHeader(http.StatusTemporaryRedirect)
-
 }

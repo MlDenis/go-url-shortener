@@ -1,32 +1,26 @@
-package httphandlers
+package app
 
 import (
-	"fmt"
 	"github.com/google/uuid"
+	"github.com/labstack/echo/v4"
 	"io"
 	"net/http"
 )
 
-func Post(w http.ResponseWriter, r *http.Request) {
-	defer r.Body.Close()
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
+func (s *Server) Post() echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		body, err := io.ReadAll(ctx.Request().Body)
+		if err != nil {
+			return ctx.String(http.StatusBadRequest, err.Error())
+		}
+		if len(body) == 0 {
+			return ctx.String(http.StatusBadRequest, "empty request body")
+		}
+
+		urlID := uuid.New().String()
+		shortURL := s.host + urlID
+		s.urlsArchive.Add(urlID, string(body))
+
+		return ctx.String(http.StatusCreated, shortURL)
 	}
-	shortURL := generateShortURL(string(body), "http://localhost:8080/")
-	w.Header().Set("content-type", "text/plain")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(shortURL))
-
-}
-
-func generateShortURL(URL string, serverAdress string) string {
-	if value, found := URLsArchive[URL]; found {
-		return value
-	}
-
-	shortURLIdentifier := uuid.New().String()
-	URLsArchive[shortURLIdentifier] = URL
-	fmt.Printf("Debug: %s%s\n", serverAdress, shortURLIdentifier)
-	return serverAdress + shortURLIdentifier
 }

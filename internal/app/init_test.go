@@ -1,13 +1,25 @@
-package httphandlers
+package app
 
-type MockShortener struct {
-	state map[string]string
+import (
+	"github.com/MlDenis/go-url-shortener/internal/config"
+	"github.com/MlDenis/go-url-shortener/internal/urlsarchive"
+	"testing"
+)
+
+type testEnv struct {
+	urlsArchive urlsarchive.URLsArchive
+	s           *Server
 }
 
-func (ms *MockShortener) POSTRequest(baseURL string) (string, error) {
-	return ms.state[baseURL], nil
-}
+func newTestEnv(t *testing.T) *testEnv {
+	cfg, _ := config.NewConfig()
 
-func (ms *MockShortener) GETRequest(shortenURL string) (string, error) {
-	return ms.state[shortenURL], nil
+	te := &testEnv{}
+
+	te.urlsArchive = urlsarchive.NewURLArchive()
+	te.s = NewServer(
+		cfg.ServerAdress,
+		te.urlsArchive,
+	)
+	return te
 }

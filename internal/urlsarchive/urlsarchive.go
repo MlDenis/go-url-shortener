@@ -1,4 +1,4 @@
-package urlarchive
+package urlsarchive
 
 import (
 	"fmt"

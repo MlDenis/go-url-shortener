@@ -1,4 +1,4 @@
-package urlarchive
+package urlsarchive
 
 type URLsArchive interface {
 	Add(id string, url string)

@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/MlDenis/go-url-shortener/internal/config"
+	"github.com/MlDenis/go-url-shortener/internal/urlsarchive"
 	"github.com/labstack/echo/v4"
 )
 

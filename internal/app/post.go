@@ -18,7 +18,7 @@ func (s *Server) Post() echo.HandlerFunc {
 		}
 
 		urlID := uuid.New().String()
-		shortURL := s.host + urlID
+		shortURL := s.host + "/" + urlID
 		s.urlsArchive.Add(urlID, string(body))
 
 		return ctx.String(http.StatusCreated, shortURL)

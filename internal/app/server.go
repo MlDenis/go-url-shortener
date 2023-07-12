@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/MlDenis/go-url-shortener/internal/config"
-	"github.com/MlDenis/go-url-shortener/internal/urlsarchive"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,6 +11,7 @@ type Server struct {
 }
 
 func NewServer(host string, urlsArchive urlsarchive.URLsArchive) *Server {
+
 	return &Server{
 		host:        host,
 		urlsArchive: urlsArchive,

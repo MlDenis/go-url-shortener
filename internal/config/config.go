@@ -9,8 +9,7 @@ type Config struct {
 
 func NewConfig() (*Config, error) {
 	cfg := &Config{}
-	cfg.BaseURL = ":8080"
-	cfg.ServerAdress = "http://localhost:8080"
+	cfg.ServerAdress = "localhost:8080"
 	return cfg, nil
 }
 

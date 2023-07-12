@@ -1,34 +1,13 @@
-package app
+package httphandlers
 
 import (
 	"fmt"
 	"github.com/google/uuid"
 	"io"
 	"net/http"
-	"path"
 )
 
-func GetHandler(w http.ResponseWriter, r *http.Request) {
-	_, shortURL := path.Split(r.URL.Path)
-
-	if shortURL == "" {
-		BadRequestHandler(w, r)
-		return
-	}
-
-	URL, found := URLsArchive[shortURL]
-	if !found {
-		BadRequestHandler(w, r)
-	}
-
-	w.Header().Set("Location", URL)
-	fmt.Printf("%s", w)
-	//http.Redirect(w, r, URL, http.StatusTemporaryRedirect)
-	w.WriteHeader(http.StatusTemporaryRedirect)
-
-}
-
-func PostHandler(w http.ResponseWriter, r *http.Request) {
+func Post(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -50,8 +29,4 @@ func generateShortURL(URL string, serverAdress string) string {
 	URLsArchive[shortURLIdentifier] = URL
 	fmt.Printf("Debug: %s%s\n", serverAdress, shortURLIdentifier)
 	return serverAdress + shortURLIdentifier
-}
-
-func BadRequestHandler(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "", http.StatusBadRequest)
 }

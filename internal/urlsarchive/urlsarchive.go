@@ -5,21 +5,21 @@ import (
 )
 
 type UA struct {
-	urlArchive map[string]string
+	urlsArchive map[string]string
 }
 
 func NewURLArchive() *UA {
 	return &UA{
-		urlArchive: make(map[string]string),
+		urlsArchive: make(map[string]string),
 	}
 }
 
 func (d *UA) Add(id string, url string) {
-	d.urlArchive[id] = url
+	d.urlsArchive[id] = url
 }
 
 func (d *UA) Get(id string) (string, error) {
-	URL, found := d.urlArchive[id]
+	URL, found := d.urlsArchive[id]
 	if !found {
 		return "", fmt.Errorf("URL not found")
 	}
